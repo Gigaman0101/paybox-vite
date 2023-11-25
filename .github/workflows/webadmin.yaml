@@ -25,6 +25,8 @@ jobs:
         run: docker push ${{vars.APP_IMAGE}}:$GITHUB_SHA
 
   condition:
+    name: Condition
+    runs-on: ubuntu-latest
     steps:
       - name: My first step
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
