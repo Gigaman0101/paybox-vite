@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: group-5-dev
+  # namespace: group-5-dev
   name: paybox-vite
 spec:
   selector:
