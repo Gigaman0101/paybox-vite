@@ -1,0 +1,21 @@
+#name: "CodeQL and Docker Tag"
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches: ["main"]
+  #workflow_dispatch:
+
+#defaults:
+#  run:
+#    working-directory: ./application/sample_csharp
+
+jobs:
+  image-versino:
+    name: Image Version
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check Package Version
+      run: yq .version package.json
