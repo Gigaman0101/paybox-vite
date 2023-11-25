@@ -19,7 +19,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Docker pull from registry
-      run: |
-        docker --version
-        docker images
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Docker pull from registry
+        run: |
+          docker --version
+          docker images
