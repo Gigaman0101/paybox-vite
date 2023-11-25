@@ -1,0 +1,13 @@
+name: "MAIN webadmin workflow"
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+defaults:
+  run:
+    working-directory: ./application
+
+jobs:
+  build-to-prod:
+    name: Build & Push Docker image
+    runs-on: ubuntu-latest
