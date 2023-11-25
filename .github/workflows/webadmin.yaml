@@ -44,9 +44,9 @@ jobs:
       - name: Set KUBE_CONTEXT
         run: |
           echo "KUBE_CONTEXT=${{secrets.KUBE_CONTEXT}}" >> $GITHUB_ENV
-          kubectl config use-context "${{ secrets.KUBE_CONTEXT }}"
+          kubectl config use-context "${{ secrets.KUBE_CONTEXT }}" -n ${{vars.KUBE_NAMESPACE}}
       - name: Update deploy to k8s
         run: |
           export APP_IMAGE_URL=${{vars.APP_IMAGE}}:$GITHUB_SHA
           yq -i '.spec.template.spec.containers[0].image = strenv(APP_IMAGE_URL)' deployment.yaml
-          kubectl apply -f deployment.yaml -n ${{vars.KUBE_NAMESPACE}}
+          kubectl apply -f deployment.yaml
