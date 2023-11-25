@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 defaults:
   run:
-    working-directory: /
+    working-directory: /application
 jobs:
   containerize:
     name: Build & Push Docker image
