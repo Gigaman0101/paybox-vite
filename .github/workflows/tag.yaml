@@ -24,12 +24,14 @@ jobs:
       - name: Docker push to registry
         run: docker push ${{vars.APP_IMAGE}}:$GITHUB_SHA
 
-      - name: Github SHA
-        run: echo $GITHUB_SHA > github-sha.txt
+      - shell: bash
+        run: |
+          echo $GITHUB_SHA > github-sha.txt
+          cat github-sha.txt
       - name: Upload SHA
         uses: actions/upload-artifact@v3
         with:
-          name: GITHUB-SHA
+          name: githubsha
           path: github-sha.txt
 
   condition:
@@ -43,13 +45,14 @@ jobs:
       - name: Download Github SHA
         uses: actions/download-artifact@v3
         with:
-          name: GITHUB-SHA
+          name: githubsha
 
       - name: First List Image
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
         run: docker images
       
       - name: Pull Image
+        shell: bash
         #if: ${{ github.event_name == 'pull_request' }}
         run: |
           git_sha_tag=`cat github-sha.txt`
