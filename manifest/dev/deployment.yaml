@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: application
-          image: application_image
+          image: gigaman/paybox-vite
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 3000

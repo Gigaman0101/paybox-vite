@@ -50,3 +50,10 @@ jobs:
           export APP_IMAGE_URL=${{vars.APP_IMAGE}}:$GITHUB_SHA
           yq -i '.spec.template.spec.containers[0].image = strenv(APP_IMAGE_URL)' deployment.yaml
           kubectl apply -f deployment.yaml -n ${{vars.KUBE_NAMESPACE}}
+      - name: Commit and Push
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add deployment.yaml
+          git commit -m "bot: update deployment $GITHUB_SHA [skip ci]"
+          git push
