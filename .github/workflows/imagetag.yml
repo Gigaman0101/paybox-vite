@@ -18,6 +18,10 @@ jobs:
     name: Image Version
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./
+
     steps:
     - name: Check Package Version
       run: yq .version package.json
