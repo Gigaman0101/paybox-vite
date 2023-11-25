@@ -1,6 +1,6 @@
 name: "MAIN webadmin workflow"
 on:
-  push:
+  pull_request:
     branches: ["main"]
   workflow_dispatch:
 defaults:
@@ -9,5 +9,10 @@ defaults:
 
 jobs:
   build-to-prod:
-    name: Build & Push Docker image
+    name: Build & Push Docker image to Production
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: check pwd
+        run: ls
