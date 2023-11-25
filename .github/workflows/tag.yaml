@@ -1,0 +1,25 @@
+#name: "CodeQL and Docker Tag"
+
+on:
+  push:
+    branches: ["github-*"]
+  pull_request:
+    types:
+      - closed
+    branches: ["main"]
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./application
+
+jobs:
+  image-version:
+    name: Image Version
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Docker pull from registry
+      run: |
+        docker --version
+        docker images
