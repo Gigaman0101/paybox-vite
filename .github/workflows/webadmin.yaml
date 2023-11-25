@@ -1,0 +1,50 @@
+name: "webadmin workflow"
+on:
+  push:
+    branches: ["develop"]
+  workflow_dispatch:
+defaults:
+  run:
+    working-directory: ./appplication/paybox-vite
+jobs:
+  containerize:
+    name: Build & Push Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Build Docker image
+        run: |
+          docker build . --file Dockerfile --tag ${{vars.APP_IMAGE}}:$GITHUB_SHA
+      - name: Docker login
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Docker push to registry
+        run: docker push ${{vars.APP_IMAGE}}:$GITHUB_SHA
+  deploy-to-k8s:
+    name: Deploy to k8s
+    runs-on: ubuntu-latest
+    environment: develops
+    needs: containerize
+    defaults:
+      run:
+        working-directory: ./manifest/dev
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set up kubeconfig
+        run: echo "${{secrets.KUBE_CONFIG}}" > kubeconfig
+      - name: Use kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          mv kubeconfig $HOME/.kube/config
+      - name: Debug kubeconfig
+        run: cat $HOME/.kube/config
+      - name: Set KUBE_CONTEXT
+        run: |
+          echo "KUBE_CONTEXT=${{secrets.KUBE_CONTEXT}}" >> $GITHUB_ENV
+          kubectl config use-context "${{ secrets.KUBE_CONTEXT }}"
+      - name: Update deploy to k8s
+        run: |
+          export APP_IMAGE_URL=${{vars.APP_IMAGE}}:$GITHUB_SHA
+          yq -i '.spec.template.spec.containers[0].image = strenv(APP_IMAGE_URL)' deployment.yaml
+          kubectl apply -f deployment.yaml

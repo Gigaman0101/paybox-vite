@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: group-5-dev
+  name: paybox-vite
+spec:
+  selector:
+    matchLabels:
+      app: paybox-vite
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: paybox-vite
+    spec:
+      containers:
+        - name: application
+          image: application_image
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 3000
+
+          envFrom:
+            - secretRef:
+                name: paybox-vite
+            - configMapRef:
+                name: paybox-vite
