@@ -1,42 +1,38 @@
-#name: "Tag"
-
+#name: "webadmin workflow"
 on:
   push:
-    branches: ["github-"]
-  pull_request:
-    types:
-      - closed
-    branches: ["main"]
+    #branches: ["develop"]
+    branches: ["github-*"]
   workflow_dispatch:
-
 defaults:
   run:
     working-directory: ./application
-
 jobs:
-  first_run:
-    name: First Run
+  containerize:
+    name: Build & Push Docker image
     runs-on: ubuntu-latest
-
-    steps:
-      - name: Docker pull from registry
-        run: |
-          docker --version
-          docker images
-  
-  image-version:
-    name: Image Version
-    runs-on: ubuntu-latest
-    needs: containerize
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Github SHA
-        run: git log -5 #| grep ^commit | cut -d " " -f 2
-
-      - name: Docker pull from registry
+      - name: check pwd
+        run : ls
+      - name: Build Docker image
         run: |
-          docker --version
-          docker images
+          docker build . --file Dockerfile --tag ${{vars.APP_IMAGE}}:$GITHUB_SHA
+      - name: Docker login
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Docker push to registry
+        run: docker push ${{vars.APP_IMAGE}}:$GITHUB_SHA
+
+  condition:
+    name: Condition
+    runs-on: ubuntu-latest
+    needs: containerize
+    steps:
+      - name: My first step
+        #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
+        run: docker image
+      
+      - name: My Second step
+        #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
+        run: docker pull ${{vars.APP_IMAGE}}:$GITHUB_SHA
