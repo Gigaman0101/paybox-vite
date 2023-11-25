@@ -1,8 +1,8 @@
 #name: "webadmin workflow"
 on:
   push:
-    #branches: ["develop"]
-    branches: ["github-*"]
+    branches: ["develop"]
+    #branches: ["github-*"]
   workflow_dispatch:
 defaults:
   run:
