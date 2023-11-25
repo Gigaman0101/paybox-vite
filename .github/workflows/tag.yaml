@@ -21,8 +21,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        
+
       - name: Docker pull from registry
         run: |
           docker --version
+          docker pull ${{vars.APP_IMAGE}}:$GITHUB_SHA
           docker images
