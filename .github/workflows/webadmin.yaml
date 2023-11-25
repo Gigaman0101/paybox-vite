@@ -27,9 +27,11 @@ jobs:
   condition:
     name: Condition
     runs-on: ubuntu-latest
+    needs: containerize
     steps:
       - name: My first step
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
         run: |
+          docker images
           docker pull ${{vars.APP_IMAGE}}:$GITHUB_SHA
           docker images
