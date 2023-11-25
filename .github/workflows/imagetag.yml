@@ -1,6 +1,8 @@
 #name: "CodeQL and Docker Tag"
 
 on:
+  push:
+    branches: ["github-*"]
   pull_request:
     types:
       - closed
