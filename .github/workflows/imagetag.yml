@@ -18,10 +18,9 @@ jobs:
     name: Image Version
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./
-
     steps:
+    - name: path
+      run: ls -l
+      
     - name: Check Package Version
-      run: yq .version package.json
+      run: yq .version ./package.json
