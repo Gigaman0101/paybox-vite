@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 defaults:
   run:
-    working-directory: ./appplication/paybox-vite
+    working-directory: ./application
 jobs:
   containerize:
     name: Build & Push Docker image
@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: check pwd
+        run : ls
       - name: Build Docker image
         run: |
           docker build . --file Dockerfile --tag ${{vars.APP_IMAGE}}:$GITHUB_SHA
@@ -23,7 +25,7 @@ jobs:
   deploy-to-k8s:
     name: Deploy to k8s
     runs-on: ubuntu-latest
-    environment: develops
+    environment: develop
     needs: containerize
     defaults:
       run:
@@ -47,4 +49,4 @@ jobs:
         run: |
           export APP_IMAGE_URL=${{vars.APP_IMAGE}}:$GITHUB_SHA
           yq -i '.spec.template.spec.containers[0].image = strenv(APP_IMAGE_URL)' deployment.yaml
-          kubectl apply -f deployment.yaml
+          kubectl apply -f deployment.yaml -n ${{vars.KUBE_NAMESPACE}}

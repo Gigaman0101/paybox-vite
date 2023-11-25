@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: group-5-dev
+  # namespace: group-5-dev
   name: paybox-vite
 spec:
   selector:
@@ -20,8 +20,8 @@ spec:
           ports:
             - containerPort: 3000
 
-          envFrom:
-            - secretRef:
-                name: paybox-vite
-            - configMapRef:
-                name: paybox-vite
+          # envFrom:
+          #   - secretRef:
+          #       name: paybox-vite
+          #   - configMapRef:
+          #       name: paybox-vite
