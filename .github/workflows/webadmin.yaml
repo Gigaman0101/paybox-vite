@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 defaults:
   run:
-    working-directory: ./appplication/paybox-vite
+    working-directory: ./appplication/
 jobs:
   containerize:
     name: Build & Push Docker image
