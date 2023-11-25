@@ -23,3 +23,11 @@ jobs:
         run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
       - name: Docker push to registry
         run: docker push ${{vars.APP_IMAGE}}:$GITHUB_SHA
+
+  condition:
+    steps:
+      - name: My first step
+        #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
+        run: |
+          docker pull ${{vars.APP_IMAGE}}:$GITHUB_SHA
+          docker images

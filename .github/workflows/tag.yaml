@@ -2,7 +2,7 @@
 
 on:
   push:
-    branches: ["github-*"]
+    branches: ["github-"]
   pull_request:
     types:
       - closed
