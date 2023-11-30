@@ -43,20 +43,16 @@ jobs:
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
         run: docker search ${{secrets.DOCKER_USERNAME}}
 
-      - name: Config Git
+      - name: Pull Image
+        continue-on-error: true
         run: |
           git --version
           git branch -a
           git checkout -f develop
           git show HEAD~1 | grep commit | head -n 1 | cut -d " " -f 2
           IMAGE_TAG=$(git log -1 | grep commit | cut -d " " -f 2)
-
-      - name: Docker Login
-        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-      
-      - name: Docker Pull
-        run: docker pull ${{vars.APP_IMAGE}}:$IMAGE_TAG
-        continue-on-error: true
-      
-      - name: List Images
-        run: docker images
+          echo "Docker Login"
+          docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+          docker pull ${{vars.APP_IMAGE}}:$IMAGE_TAG
+          echo "List Images"
+          docker images
