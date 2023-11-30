@@ -51,9 +51,12 @@ jobs:
           git show HEAD~1 | grep commit | head -n 1 | cut -d " " -f 2
           IMAGE_TAG=$(git log -1 | grep commit | cut -d " " -f 2)
 
-      - name: Pull image
-        run: |
-          docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-          echo "------"
-          docker pull ${{vars.APP_IMAGE}}:$IMAGE_TAG
-          docker images | grep ${{vars.APP_IMAGE}}
+      - name: Docker Login
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      
+      - name: Docker Pull
+        run: docker pull ${{vars.APP_IMAGE}}:$IMAGE_TAG
+        continue-on-error: true
+      
+      - name: List Images
+        run: docker images
