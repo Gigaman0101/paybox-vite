@@ -48,13 +48,12 @@ jobs:
           git --version
           git branch -a
           git checkout -f develop
-          git log -1 | grep commit | cut -d " " -f 2
+          git show HEAD~1 | grep commit | head -n 1 | cut -d " " -f 2
           IMAGE_TAG=$(git log -1 | grep commit | cut -d " " -f 2)
-          echo $IMAGE_TAG
 
       - name: Pull image
         run: |
           docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
           echo "------"
-          git pull ${{vars.APP_IMAGE}}:$IMAGE_TAG
+          docker pull ${{vars.APP_IMAGE}}:$IMAGE_TAG
           docker images | grep ${{vars.APP_IMAGE}}
