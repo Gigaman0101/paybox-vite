@@ -42,4 +42,4 @@ jobs:
       
       - name: List Docker Hub Images
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
-        run: docker images
+        run: docker search ${{secrets.DOCKER_USERNAME}}
