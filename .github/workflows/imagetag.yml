@@ -43,3 +43,10 @@ jobs:
       - name: List Docker Hub Images
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
         run: docker search ${{secrets.DOCKER_USERNAME}}
+
+      - name: List Images in HUB 
+        run: |
+          - name: Github SHA
+            run: |
+              git --version
+              git log -5 | grep commit | cut -d " " -f 2
