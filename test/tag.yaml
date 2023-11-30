@@ -24,7 +24,8 @@ jobs:
       - name: Docker push to registry
         run: docker push ${{vars.APP_IMAGE}}:$GITHUB_SHA
 
-      - shell: bash
+      - name: Save SHA
+        shell: bash
         run: |
           echo $GITHUB_SHA > github-sha.txt
           cat github-sha.txt
