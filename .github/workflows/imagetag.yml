@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: List Local Images
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
@@ -44,6 +46,7 @@ jobs:
       - name: Config Git
         run: |
           git --version
+          git branch -a
           git checkout -f develop
           git log -1 | grep commit | cut -d " " -f 2
           IMAGE_TAG=$(git log -1 | grep commit | cut -d " " -f 2)
