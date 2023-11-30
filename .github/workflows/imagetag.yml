@@ -46,7 +46,5 @@ jobs:
 
       - name: List Images in HUB 
         run: |
-          - name: Github SHA
-            run: |
-              git --version
-              git log -5 | grep commit | cut -d " " -f 2
+          git --version
+          git log -5 | grep commit | cut -d " " -f 2
