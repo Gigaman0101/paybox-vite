@@ -36,9 +36,6 @@ jobs:
       - name: List Local Images
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
         run: docker images
-
-      - name: Docker login
-        run: 
       
       - name: List Docker Hub Images
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
