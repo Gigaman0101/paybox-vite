@@ -9,9 +9,9 @@ on:
     #branches: ["main"]
   #workflow_dispatch:
 
-#defaults:
-#  run:
-#    working-directory: ./application
+defaults:
+  run:
+    working-directory: ./application
 
 jobs:
   #image-version:
@@ -42,4 +42,4 @@ jobs:
       
       - name: List Docker Hub Images
         #if: ${{ github.event_name == 'pull_request' && github.event.action == 'unassigned' }}
-        run: docker images | grep ${{vars.APP_IMAGE}}
+        run: docker images
